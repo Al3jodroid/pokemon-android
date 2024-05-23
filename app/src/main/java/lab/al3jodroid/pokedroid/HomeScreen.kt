@@ -21,13 +21,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import lab.al3jodroid.pokedroid.ui.PokemonViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen() {
     //reference to the viewModel that contains the business logic and emit states for UI
-    val viewModel = viewModel<CounterViewModel>()
+    val viewModel = hiltViewModel<PokemonViewModel>()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -55,9 +56,9 @@ fun HomeScreen() {
 }
 
 @Composable
-fun HomeContent(viewModel: CounterViewModel, innerPadding: PaddingValues) {
+fun HomeContent(viewModel: PokemonViewModel, innerPadding: PaddingValues) {
     //ready to collect values when the viewModel emit it, here the state its consumed
-    val counterState = viewModel.counterState.collectAsState()
+    val urlState = viewModel.urlState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -68,7 +69,7 @@ fun HomeContent(viewModel: CounterViewModel, innerPadding: PaddingValues) {
         verticalArrangement = Arrangement.Center
     ) {
         Greeting()
-        TapsCounter(counterState.value) //access to the value stored in the state for render in UI
+        RenderImage(urlState.value) //access to the value stored in the state for render in UI
     }
 }
 
@@ -79,20 +80,19 @@ fun Greeting(modifier: Modifier = Modifier) {
         modifier = modifier
     )
 }
-
 @Composable
-fun TapsCounter(quantity: Int) {
+fun RenderImage(urlString: String) {
     Text(
-        text = quantity.toString(),
+        text = urlString,
         fontSize = 32.sp
     )
 }
 
 @Composable
-fun RenderFloatingActionButton(viewModel: CounterViewModel) {
+fun RenderFloatingActionButton(viewModel: PokemonViewModel) {
     FloatingActionButton(
-        // onClick = { viewModel.incrementCounter() },  // Classic way to execute code when click its done
-        onClick =  viewModel::incrementCounter, // Definition as reference when its clicked
+        // onClick = { viewModel.getUrlImageRandom() },  // Classic way to execute code when click its done
+        onClick =  viewModel::getUrlImageSequence, // Definition as reference when its clicked
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = MaterialTheme.colorScheme.secondary
     ) {
