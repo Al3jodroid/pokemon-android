@@ -23,7 +23,7 @@ class PokemonViewModel @Inject constructor(private val useCase: PokemonUseCase) 
     }
 
     fun getUrlImageRandom() {
-        val urlPokemonImage = useCase.generateRandomUrlImage()
+        val urlPokemonImage = useCase.generateRandomUrlImage(1)
         _urlState.value = urlPokemonImage
     }
 }
