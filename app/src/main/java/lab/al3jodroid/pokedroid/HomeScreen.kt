@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -20,8 +21,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil3.compose.AsyncImage
 import lab.al3jodroid.pokedroid.ui.PokemonViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,14 +34,14 @@ fun HomeScreen() {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.smallTopAppBarColors(
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
 
                 title = {
                     Text(
-                        "Compose Demo Home Page",
+                        "Pokedroid v0.1"
                     )
                 }
             )
@@ -68,23 +70,16 @@ fun HomeContent(viewModel: PokemonViewModel, innerPadding: PaddingValues) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Greeting()
         RenderImage(urlState.value) //access to the value stored in the state for render in UI
     }
 }
 
 @Composable
-fun Greeting(modifier: Modifier = Modifier) {
-    Text(
-        text = "You have pushed the button this many times:",
-        modifier = modifier
-    )
-}
-@Composable
 fun RenderImage(urlString: String) {
-    Text(
-        text = urlString,
-        fontSize = 32.sp
+    AsyncImage(
+        modifier = Modifier.width(256.dp),
+        model = urlString,
+        contentDescription = "pokemon image!"
     )
 }
 
@@ -92,7 +87,7 @@ fun RenderImage(urlString: String) {
 fun RenderFloatingActionButton(viewModel: PokemonViewModel) {
     FloatingActionButton(
         // onClick = { viewModel.getUrlImageRandom() },  // Classic way to execute code when click its done
-        onClick =  viewModel::getUrlImageSequence, // Definition as reference when its clicked
+        onClick =  viewModel::getUrlImageSequence, // Definition as reference when clicked
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = MaterialTheme.colorScheme.secondary
     ) {
